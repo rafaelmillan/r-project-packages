@@ -3,6 +3,21 @@ require "rails_helper"
 describe Indexer do
   describe "#create_index" do
     before(:all) do
+      Package.destroy_all
+      Version.destroy_all
+
+      stub_request(:get, "http://cran.r-project.org/src/contrib/PACKAGES")
+        .to_return(status: 200, body: File.read("spec/fixtures/PACKAGES"))
+
+      stub_request(:get, "http://cran.r-project.org/src/contrib/A3_1.0.0.tar.gz")
+        .to_return(status: 200, body: File.read("spec/fixtures/A3_1.0.0.tar.gz"))
+
+      stub_request(:get, "http://cran.r-project.org/src/contrib/rafalib_1.0.0.tar.gz")
+        .to_return(status: 200, body: File.read("spec/fixtures/rafalib_1.0.0.tar.gz"))
+
+      stub_request(:get, "http://cran.r-project.org/src/contrib/sivipm_1.1-4.tar.gz")
+        .to_return(status: 200, body: File.read("spec/fixtures/sivipm_1.1-4.tar.gz"))
+
       Indexer.new.create_index
     end
 
