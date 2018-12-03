@@ -1,0 +1,21 @@
+Package: A3
+Version: 1.0.0
+Depends: R (>= 2.15.0), xtable, pbapply
+Suggests: randomForest, e1071
+License: GPL (>= 2)
+NeedsCompilation: no
+
+Package: rafalib
+Version: 1.0.0
+Imports: RColorBrewer
+License: Artistic-2.0
+NeedsCompilation: no
+
+Package: sivipm
+Version: 1.1-4
+Depends: R (>= 3.6), methods
+Imports: stats, graphics, utils, seqinr
+License: GPL (>= 2)
+MD5sum: e87f5452b030931203c418c44868ff10
+NeedsCompilation: yes
+Path: 3.6.0/Other
