@@ -1,3 +1,5 @@
 class Version < ApplicationRecord
-  validates :version, presence: true
+  belongs_to :package
+
+  validates :number, presence: true
 end

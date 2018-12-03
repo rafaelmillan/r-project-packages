@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_03_201431) do
+ActiveRecord::Schema.define(version: 2018_12_03_202102) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "packages", force: :cascade do |t|
+    t.string "name", null: false
+    t.bigint "latest_version_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["latest_version_id"], name: "index_packages_on_latest_version_id"
+  end
 
   create_table "versions", force: :cascade do |t|
     t.string "number", null: false
@@ -24,6 +32,9 @@ ActiveRecord::Schema.define(version: 2018_12_03_201431) do
     t.string "maintainers"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "package_id"
+    t.index ["package_id"], name: "index_versions_on_package_id"
   end
 
+  add_foreign_key "packages", "versions", column: "latest_version_id"
 end
