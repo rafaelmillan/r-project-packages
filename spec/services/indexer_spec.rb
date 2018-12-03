@@ -11,11 +11,11 @@ describe Indexer do
     end
 
     it "creates a Package and its Version records" do
-      expect(Package.find_by("rafalib").name).to eq("rafalib")
+      expect(Package.find_by(name: "rafalib")).to be_present
     end
 
     it "indexes all the Version attributes" do
-      version = Package.find_by("rafalib").latest_version
+      version = Package.find_by(name: "rafalib").latest_version
 
       expect(version.number).to eq("1.0.0")
       expect(version.date_publication).to eq(DateTime.parse("2015-08-09 00:00:40"))
