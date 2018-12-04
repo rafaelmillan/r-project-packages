@@ -1,0 +1,16 @@
+<h1 class="mt-3"><%= @package.name %> (<%= @version.number %>)</h1>
+
+<h4 class="text-secondary"><%= @version.title %></h4>
+
+<p><%= @version.description %></p>
+
+<span class="text-muted small">Publication date: <%= @version.date_publication %></span><br>
+<span class="text-muted small">Author: <%= @version.author %></span><br>
+<span class="text-muted small">Maintainers: <%= @version.maintainers %></span><br>
+
+<h4 class="mt-3">All versions:</h4>
+<ul>
+  <% @package.versions.each do |version| %>
+    <li><%= link_to version.number, package_version_path(@package, version) %></li>
+  <% end %>
+</ul>

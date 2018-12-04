@@ -1,0 +1,10 @@
+<h1 class="mt-3">R-Project Packages</h1>
+
+<div class="list-group mb-5">
+  <% @packages.each do |package| %>
+    <%= link_to package_version_path(package, package.latest_version), class: "list-group-item list-group-item-action" do %>
+      <span class="text-primary"><%= "#{package.name} (#{package.latest_version.number})" %></span><br>
+      <span class="text-muted"><%= package.latest_version.title %></span>
+    <% end %>
+  <% end %>
+</div>
