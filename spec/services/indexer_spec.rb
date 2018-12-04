@@ -6,17 +6,7 @@ describe Indexer do
       Package.destroy_all
       Version.destroy_all
 
-      stub_request(:get, "http://cran.r-project.org/src/contrib/PACKAGES")
-        .to_return(status: 200, body: File.read("spec/fixtures/PACKAGES"))
-
-      stub_request(:get, "http://cran.r-project.org/src/contrib/A3_1.0.0.tar.gz")
-        .to_return(status: 200, body: File.read("spec/fixtures/A3_1.0.0.tar.gz"))
-
-      stub_request(:get, "http://cran.r-project.org/src/contrib/rafalib_1.0.0.tar.gz")
-        .to_return(status: 200, body: File.read("spec/fixtures/rafalib_1.0.0.tar.gz"))
-
-      stub_request(:get, "http://cran.r-project.org/src/contrib/sivipm_1.1-4.tar.gz")
-        .to_return(status: 200, body: File.read("spec/fixtures/sivipm_1.1-4.tar.gz"))
+      stub_indexer_calls
 
       Indexer.new.create_index
     end
@@ -43,17 +33,38 @@ describe Indexer do
 
   describe "#refresh_index" do
     before(:all) do
-      indexer = Indexer.new
+      stub_indexer_calls
 
-      indexer.create_index
-      indexer.refresh_index
+      Indexer.new.create_index
+
+      stub_request(:get, "http://cran.r-project.org/src/contrib/PACKAGES")
+        .to_return(status: 200, body: File.read("spec/fixtures/PACKAGES_UPDATED"))
+
+      stub_request(:get, "http://cran.r-project.org/src/contrib/rafalib_1.0.1.tar.gz")
+        .to_return(status: 200, body: File.read("spec/fixtures/rafalib_1.0.1.tar.gz"))
+
+      Indexer.new.refresh_index
     end
 
     it "updates new packages" do
-      version = Package.find_by("rafalib").latest_version
+      version = Package.find_by(name: "rafalib").latest_version
 
       expect(version.number).to eq("1.0.1")
-      expect(version.description).to eq("A new and better description")
+      expect(version.title).to eq("A new and better description")
     end
+  end
+
+  def stub_indexer_calls
+    stub_request(:get, "http://cran.r-project.org/src/contrib/PACKAGES")
+      .to_return(status: 200, body: File.read("spec/fixtures/PACKAGES"))
+
+    stub_request(:get, "http://cran.r-project.org/src/contrib/A3_1.0.0.tar.gz")
+      .to_return(status: 200, body: File.read("spec/fixtures/A3_1.0.0.tar.gz"))
+
+    stub_request(:get, "http://cran.r-project.org/src/contrib/rafalib_1.0.0.tar.gz")
+      .to_return(status: 200, body: File.read("spec/fixtures/rafalib_1.0.0.tar.gz"))
+
+    stub_request(:get, "http://cran.r-project.org/src/contrib/sivipm_1.1-4.tar.gz")
+      .to_return(status: 200, body: File.read("spec/fixtures/sivipm_1.1-4.tar.gz"))
   end
 end
