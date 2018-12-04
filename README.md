@@ -1,24 +1,24 @@
-# README
+# R-Project Packages
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a proof of concept of an app that indexes packages from http://cran.r-project.org/src/contrib/
 
-Things you may want to cover:
+To run, set up the database:
+```
+rails db:setup
+```
+Create an index:
 
-* Ruby version
+```
+rake index:create
+```
+Start the server:
+```
+rails s
+```
+Go to http://localhost:3000/packages/
 
-* System dependencies
+To refresh the index, set up a cron job to run this task:
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```
+rake index:refresh
+```
